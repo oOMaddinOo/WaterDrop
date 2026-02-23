@@ -1,8 +1,19 @@
 ﻿@page "/"
+@inject IJSRuntime JS
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Meine Karte</h1>
 
-Welcome to your new app.
-<h1>Jaaron will mal wieder  ne Ziese Rauchen</h1>
+<div id="map" style="height: 500px; width: 100%;"></div>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initMap", 53.5511, 10.0064);
+        }
+    }
+}

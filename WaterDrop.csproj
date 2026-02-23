@@ -7,4 +7,9 @@
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BlazorLeafletInterop" Version="4.3.2" />
+    <PackageReference Include="LeafletForBlazor" Version="2.4.6.26" />
+  </ItemGroup>
+
 </Project>
