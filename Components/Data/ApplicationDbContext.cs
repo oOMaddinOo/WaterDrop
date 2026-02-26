@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WaterDrop.Components.Models;
 namespace WaterDrop.Components.Data
 {
 	public class ApplicationDbContext : DbContext
@@ -10,7 +11,7 @@ namespace WaterDrop.Components.Data
 		}
 
 	
-		public DbSet<Models.KloModel> KloModels { get; set; }
+		public DbSet<KloModel> KloModels { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
