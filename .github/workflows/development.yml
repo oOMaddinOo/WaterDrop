@@ -1,4 +1,4 @@
-name: WaterDrop erstellen und bereitstellen
+name: WaterDrop Dev Pipeline
 
 on:
   push:
