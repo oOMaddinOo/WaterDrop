@@ -2,18 +2,64 @@
 @inject IJSRuntime JS
 @rendermode InteractiveServer
 
+
 <PageTitle>Home</PageTitle>
 
 <h1>Meine Karte</h1>
 
 <div id="map" style="height: 500px; width: 100%;"></div>
 
+
+<div>
+    <button class="btn btn-primary" @onclick="GetToilet">Get Toilets</button>
+</div>
+
 @code {
+
+
+    async Task GetToilet()
+    {
+        var service = new kloService();
+        var result = await service.GetAllToilets();
+        try
+        {
+            foreach(var toilet in result.Elements)
+            {
+                if (toilet.Lat != null && toilet.Lon != null)
+                {
+                    await JS.InvokeVoidAsync("addMarker", toilet.Lat, toilet.Lon, toilet.Type, toilet.Tags ?? new Dictionary<string, string>());
+                }
+
+            }
+    }
+     catch(Exception ex)
+        {
+            Console.WriteLine("Fehler: ",ex.Message);
+        }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("initMap", 53.5801097, 9.8859876);
+             await JS.InvokeVoidAsync("initMap", 53.5801097, 9.8859876);
+            var service = new kloService();
+            var result = await service.GetAllToilets();
+            try
+            {
+                foreach (var toilet in result.Elements)
+                {
+                    if (toilet.Lat != null && toilet.Lon != null)
+                    {
+                        await JS.InvokeVoidAsync("addMarker", toilet.Lat, toilet.Lon, toilet.Type, toilet.Tags ?? new Dictionary<string, string>());
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fehler: ", ex.Message);
+            }
         }
     }
 }
