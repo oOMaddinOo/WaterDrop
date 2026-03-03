@@ -1,3 +1,4 @@
+<<<<<<< development
 ﻿using Newtonsoft.Json;
 
 namespace WaterDrop.Components.Models
@@ -53,4 +54,11 @@ namespace WaterDrop.Components.Models
 		public Dictionary<string, string> Tags { get; set; }
 	}
 
+=======
+﻿namespace WaterDrop.Components.Models
+{
+	public class KloModel
+	{
+	}
+>>>>>>> master
 }

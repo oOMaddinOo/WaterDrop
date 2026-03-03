@@ -1,3 +1,4 @@
+<<<<<<< development
 ﻿window.map = null;
 
 window.initMap = function (lat, lon) {
@@ -33,3 +34,16 @@ window.addMarker = function (lat, lon, type, tags) {
     L.marker([lat, lon]).addTo(window.map)
         .bindPopup(`<strong>Type:</strong> ${type}<br>${tagsHtml}`);
 };
+=======
+﻿function initMap(lat, lon) {
+    const map = L.map('map').setView([lat, lon], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([lat, lon]).addTo(map)
+        .bindPopup(`Lat: ${lat}<br>Lon: ${lon}`)
+        .openPopup();
+}
+>>>>>>> master
