@@ -4,11 +4,6 @@ namespace WaterDrop.Components.Models
 {
 	public class KloModel
 	{
-		public OverpassResponse OverpassResponse { get; set; }
-	}
-
-	public class OverpassResponse
-	{
 		[JsonProperty("version")]
 		public double Version { get; set; }
 
@@ -48,7 +43,7 @@ namespace WaterDrop.Components.Models
 		[JsonProperty("lon")]
 		public double? Lon { get; set; }
 
-		// Dynamische OSM-Tags
+		// Dynamische Tags
 		[JsonProperty("tags")]
 		public Dictionary<string, string> Tags { get; set; }
 	}

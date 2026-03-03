@@ -1,4 +1,5 @@
 ﻿window.map = null;
+window.markers = [];
 
 window.initMap = function (lat, lon) {
 
@@ -8,7 +9,7 @@ window.initMap = function (lat, lon) {
         attribution: '© OpenStreetMap contributors'
     }).addTo(window.map);
 
-    L.marker([lat, lon]).addTo(window.map);
+   /* L.marker([lat, lon]).addTo(window.map);*/
 };
 
 window.addMarker = function (lat, lon, type, tags) {
@@ -30,6 +31,28 @@ window.addMarker = function (lat, lon, type, tags) {
         tagsHtml = '<em>Keine Tags verfügbar</em>';
     }
 
-    L.marker([lat, lon]).addTo(window.map)
+    const marker = L.marker([lat, lon]).addTo(window.map)
         .bindPopup(`<strong>Type:</strong> ${type}<br>${tagsHtml}`);
+    
+    window.markers.push(marker);
+};
+
+// Zentriert die Karte auf einen Punkt
+window.centerMap = function (lat, lon, zoom = 13) {
+    if (window.map) {
+        window.map.setView([lat, lon], zoom);
+    } else {
+        console.error("Map not initialized!");
+    }
+};
+
+// Entfernt alle Marker von der Karte
+window.clearMarkers = function () {
+    if (window.markers && window.markers.length > 0) {
+        window.markers.forEach(marker => {
+            window.map.removeLayer(marker);
+        });
+        window.markers = [];
+        console.log("All markers cleared");
+    }
 };
