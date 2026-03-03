@@ -11,7 +11,7 @@ namespace WaterDrop.Components.Data
 		}
 
 	
-		public DbSet<KloModel> KloModels { get; set; }
+		public DbSet<KloModel> KloModel { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
