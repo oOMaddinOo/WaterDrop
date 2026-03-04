@@ -58,6 +58,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: WaterDrop
+
+      - name: Checkout Tests
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          path: WaterDrop.Tests
+          sparse-checkout: |
+            WaterDrop.Tests
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -65,13 +75,16 @@ jobs:
           dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
       - name: Restore Tests
-        run: dotnet restore "../WaterDrop.Tests/WaterDrop.Tests.csproj"
+        run: dotnet restore "WaterDrop.Tests/WaterDrop.Tests.csproj"
+        working-directory: .
 
       - name: Build Tests
-        run: dotnet build "../WaterDrop.Tests/WaterDrop.Tests.csproj" --configuration ${{ env.CONFIGURATION }}
+        run: dotnet build "WaterDrop.Tests/WaterDrop.Tests.csproj" --configuration ${{ env.CONFIGURATION }}
+        working-directory: .
 
       - name: Run Unit Tests
-        run: dotnet test "../WaterDrop.Tests/WaterDrop.Tests.csproj" --configuration ${{ env.CONFIGURATION }} --no-build --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
+        run: dotnet test "WaterDrop.Tests/WaterDrop.Tests.csproj" --configuration ${{ env.CONFIGURATION }} --no-build --logger "trx"
+        working-directory: .
 
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
@@ -79,13 +92,6 @@ jobs:
         with:
           name: test-results
           path: "**/*.trx"
-
-      - name: Upload Code Coverage
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: code-coverage
-          path: "**/coverage.cobertura.xml"
 
   deploy:
     runs-on: ubuntu-latest
