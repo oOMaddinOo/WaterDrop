@@ -43,7 +43,7 @@ jobs:
         run: dotnet build "${{ env.PROJECT }}" --configuration ${{ env.CONFIGURATION }} --no-restore
 
       - name: Publish
-        run: dotnet publish "${{ env.WORKING_DIRECTORY }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
+        run: dotnet publish "${{ env.PROJECT }}" --configuration ${{ env.CONFIGURATION }} --no-build --output "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -64,20 +64,28 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_CORE_VERSION }}
 
-      - name: Restore
-        run: dotnet restore "${{ env.PROJECT }}"
+      - name: Restore Tests
+        run: dotnet restore "../WaterDrop.Tests/WaterDrop.Tests.csproj"
 
-      - name: Build Solution
-        run: dotnet build "${{ env.PROJECT }}" --configuration ${{ env.CONFIGURATION }}
+      - name: Build Tests
+        run: dotnet build "../WaterDrop.Tests/WaterDrop.Tests.csproj" --configuration ${{ env.CONFIGURATION }}
 
-      - name: Run Tests
-        run: dotnet test "${{ env.PROJECT }}" --configuration ${{ env.CONFIGURATION }} --no-build --logger "trx"
+      - name: Run Unit Tests
+        run: dotnet test "../WaterDrop.Tests/WaterDrop.Tests.csproj" --configuration ${{ env.CONFIGURATION }} --no-build --logger "trx;LogFileName=test-results.trx" --collect:"XPlat Code Coverage"
 
-      - name: Upload Test Result
+      - name: Upload Test Results
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: test-results
           path: "**/*.trx"
+
+      - name: Upload Code Coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: code-coverage
+          path: "**/coverage.cobertura.xml"
 
   deploy:
     runs-on: ubuntu-latest
